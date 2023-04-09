@@ -17,7 +17,20 @@ export class App extends Component {
     //name: '',
     //number: ''
   }
+  componentDidMount() {
+    console.log("componentDidMount");
+    const contactsLocalStorage = localStorage.getItem("contact");
+    const parsedContactsLocalStorage = JSON.parse(contactsLocalStorage)
+    if (parsedContactsLocalStorage) {
+    this.setState({contacts: parsedContactsLocalStorage})}
+    
+  }
 
+  componentDidUpdate(prevState, prevProps) {
+    console.log("Обновилось поле contacts")
+    if (this.state.contacts !== prevState.contacts)
+      localStorage.setItem("contact", JSON.stringify(this.state.contacts))
+  }
   addContact = (data) => {
     const existingName = this.state.contacts
       .map((contact) => contact.name)
@@ -54,6 +67,7 @@ export class App extends Component {
   };
   
   render() {
+    console.log("render")
     const filteredContacts = this.getFilteredContacts();
     return (
       <div>
